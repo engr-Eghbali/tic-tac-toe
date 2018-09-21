@@ -12,7 +12,7 @@ const Possiblities=[[11,12,13],
  var Player_1_log=[0,0,0,0,0];
  var Player_2_log=[0,0,0,0,0];
  var c=0;
-
+var  winner=2;
 
  function desicion(){
 
@@ -22,60 +22,72 @@ const Possiblities=[[11,12,13],
 	 var temp=[];
 	 var attack=1;
 
+	 if(c==4 && winner==2){
+		//desicion();
+		alert("!مساوی شدیم");
+		window.location.reload(1);
+		return true;
+	}
+
+
+	 PossibleMoves.forEach(function(arr,ind){
+		 j=0;
+		 while(Player_1_log[j]!=0){
+			 if(arr.includes(Player_1_log[j]))
+			 PossibleMoves.splice(ind,1);
+		j++;	 
+		 }
+	 })
      //////////////////////////////
 	 ///search for defence situation
-	 for(i=0;i<8;i++){
-	 possible=PossibleMoves[i]; 
-	 j=0;flag=0;
-	 temp=possible.slice();
-	 while(Player_1_log[j]!=0){
-		 
-		 if(temp.includes(Player_1_log[j])){
-			 temp.splice(temp.indexOf(Player_1_log[j]),1);
-			 flag++;
-		 }
-		 if(flag==2){
-			 //alert("third:"+temp);
-			attack=0;
-			break;
-		 }
-		 if(flag==3){
-			 alert("user win");
-			 attack=0;
-			 break;
-		 }
-		 j++;
-	 }
-	 if(flag==2){
-		 if(marker(temp[0],0)){
-            break;
-		 }}
-	 if(flag==3){alert("winner!");break;}
+	 for(i=0;i<PossibleMoves.length;i++){
+
+		possible=PossibleMoves[i]; 
+		j=0;flag=0;
+		temp=possible.slice();
+
+		while(Player_2_log[j]!=0){
+		
+			if(temp.includes(Player_2_log[j])){
+				temp.splice(temp.indexOf(Player_2_log[j]),1);
+				flag++;
+			}
+			if(flag==2){
+				//alert("third:"+temp);
+			   attack=0;
+			   break;
+			}
+		
+			j++;
+		}
+		if(flag==2){
+			if(marker(temp[0],0)){
+			   break;
+			}}
+		
+		////////////////
 	 }
 
 	 ////////////////////////////////////////////
 	 ///if not need to defence and have to attack
 	 if (attack==1){
 
-		for(i=0;i<8;i++){
+		for(i=0;i<PossibleMoves.length;i++){
+
 			possible=PossibleMoves[i]; 
 			j=0;flag=0;
 			temp=possible.slice();
-			while(Player_2_log[j]!=0){
+			while(Player_1_log[j]!=0){
 				
-				if(temp.includes(Player_2_log[j])){
-					temp.splice(temp.indexOf(Player_2_log[j]),1);
+				if(temp.includes(Player_1_log[j])){
+					temp.splice(temp.indexOf(Player_1_log[j]),1);
 					flag++;
 				}
 				if(flag==2){
 					//alert("third:"+temp);
+				//	marker(temp[0],0);
 				   attack=0;
 				   break;
-				}
-				if(flag==3){
-					alert("cpu win");
-					attack=0;
-					break;
 				}
 				j++;
 			}
@@ -83,7 +95,7 @@ const Possiblities=[[11,12,13],
 				if(marker(temp[0],0)){
 				   break;
 				}}
-			if(flag==3){alert("looser!");break;}
+
 			}
 	   if(attack==1){
 
@@ -104,6 +116,12 @@ const Possiblities=[[11,12,13],
 
 
  function marker(move,player){
+
+	var PossibleMoves=Possiblities.slice();
+	var j=0;
+	var flag=0;
+	var temp=[];
+
 		
 		switch (player){
 			case -1:
@@ -118,11 +136,34 @@ const Possiblities=[[11,12,13],
 				alert("wrong move");
 				return false;
 			}else{
-        
+		
+				
 					Player_1_log[c]=move;
 					c++;
 					console.log("player 1: "+Player_1_log+" move:"+c);
-                    document.getElementById(move).style.backgroundImage="url('./img/cross.svg')";
+					document.getElementById(move).style.backgroundImage="url('./img/cross.svg')";
+					
+					for(i=0;i<8;i++){
+
+						possible=PossibleMoves[i]; 
+						j=0;flag=0;
+						temp=possible.slice();
+						while(Player_1_log[j]!=0){
+							
+							if(temp.includes(Player_1_log[j])){
+								temp.splice(temp.indexOf(Player_1_log[j]),1);
+								flag++;
+							}
+							if(flag==3){
+							   alert("!برنده شدی");
+							   winner=1;
+							   window.location.reload(1);
+							   return true;
+							}
+							j++;
+						}
+						}
+
 				  return true;
 			}
       
@@ -136,6 +177,28 @@ const Possiblities=[[11,12,13],
 			Player_2_log[c-1]=move;
 			console.log("player 2: "+Player_2_log+" move"+c);
 			document.getElementById(move).style.backgroundImage="url('./img/circle.svg')";
+
+			for(i=0;i<8;i++){
+
+				possible=PossibleMoves[i]; 
+				j=0;flag=0;
+				temp=possible.slice();
+				while(Player_2_log[j]!=0){
+					
+					if(temp.includes(Player_2_log[j])){
+						temp.splice(temp.indexOf(Player_2_log[j]),1);
+						flag++;
+					}
+					if(flag==3){
+					   alert("!باختی");
+					   winner=0;
+					   window.location.reload(1);
+					   break;
+					}
+					j++;
+				}
+				}
+
 			return true;
 			}
 		}
@@ -169,14 +232,9 @@ const Possiblities=[[11,12,13],
 
 	 }else{
 
-  	marker(place,1);
-    desicion();
-
-	if(c==4){
-		//desicion();
-		alert("match draw!");
-	}
-         
+  if(marker(place,1))
+  desicion();
+             
 
 	 }
 	 

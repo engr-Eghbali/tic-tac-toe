@@ -27,3 +27,14 @@ body{
 	background-size: contain;
 	background-position: center;
 }
+#reset{
+	width: 16vh;
+	height: 8vh;
+	margin-left: 42vh;
+	margin-top: 10vh;
+	font-size: 4vh;
+	background-color: papayawhip;
+	color: black;
+	border: 1px solid red;
+	border-radius: 10px;
+}

@@ -30,18 +30,52 @@ var  winner=2;
 	}
 
 
-	 PossibleMoves.forEach(function(arr,ind){
-		 j=0;
-		 while(Player_1_log[j]!=0){
-			 if(arr.includes(Player_1_log[j]))
-			 PossibleMoves.splice(ind,1);
-		j++;	 
-		 }
-	 })
+
      //////////////////////////////
 	 ///search for defence situation
 	 for(i=0;i<PossibleMoves.length;i++){
 
+		possible=PossibleMoves[i]; 
+			j=0;flag=0;
+			temp=possible.slice();
+			while(Player_1_log[j]!=0){
+				
+				if(temp.includes(Player_1_log[j])){
+					temp.splice(temp.indexOf(Player_1_log[j]),1);
+					flag++;
+				}
+				if(flag==2){
+					//alert("third:"+temp);
+				//	marker(temp[0],0);
+				   attack=0;
+				   break;
+				}
+				j++;
+			}
+			if(flag==2){
+				if(marker(temp[0],0)){
+				   break;
+				}}
+		////////////////
+	 }
+
+	 ////////////////////////////////////////////
+	 ///if not need to defence and have to attack
+	 if (attack==1){
+
+		PossibleMoves.forEach(function(arr,ind){
+			j=0;
+			while(Player_1_log[j]!=0){
+				if(arr.includes(Player_1_log[j]))
+				PossibleMoves.splice(ind,1);
+		   j++;	 
+			}
+		})
+   
+
+		for(i=0;i<PossibleMoves.length;i++){
+
+			
 		possible=PossibleMoves[i]; 
 		j=0;flag=0;
 		temp=possible.slice();
@@ -64,37 +98,7 @@ var  winner=2;
 			if(marker(temp[0],0)){
 			   break;
 			}}
-		
-		////////////////
-	 }
-
-	 ////////////////////////////////////////////
-	 ///if not need to defence and have to attack
-	 if (attack==1){
-
-		for(i=0;i<PossibleMoves.length;i++){
-
-			possible=PossibleMoves[i]; 
-			j=0;flag=0;
-			temp=possible.slice();
-			while(Player_1_log[j]!=0){
-				
-				if(temp.includes(Player_1_log[j])){
-					temp.splice(temp.indexOf(Player_1_log[j]),1);
-					flag++;
-				}
-				if(flag==2){
-					//alert("third:"+temp);
-				//	marker(temp[0],0);
-				   attack=0;
-				   break;
-				}
-				j++;
-			}
-			if(flag==2){
-				if(marker(temp[0],0)){
-				   break;
-				}}
+			/////////////
 
 			}
 	   if(attack==1){
